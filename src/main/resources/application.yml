@@ -19,3 +19,4 @@ s3:
   accessKey: <access key id>
   secretKey: <secret access key>
   bucketName: <name of the bucket>
+vcap.services: "{\"aws-s3\": [{\"credentials\": {\"access_key_id\": \"${MINIO_ACCESS_KEY:?missing}\", \"bucket\": \"movie-fun-course\", \"secret_access_key\": \"${MINIO_SECRET_ACCESS_KEY:?missing}\"}, \"label\": \"aws-s3\", \"name\": \"moviefun-s3\"}]}"

@@ -2,6 +2,8 @@ package org.superbiz.moviefun;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -9,12 +11,17 @@ import java.util.Objects;
 public class ServiceCredentials {
 
     private final String vcapServices;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public ServiceCredentials(String vcapServices) {
         this.vcapServices = vcapServices;
     }
 
     public String getCredential(String serviceName, String serviceType, String credentialKey) {
+
+        logger.info("VCAP" + vcapServices);
+        logger.info("Servicename to find: " + serviceName);
+        logger.info("Servicetype to find: " + serviceType);
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode root;
@@ -28,6 +35,7 @@ public class ServiceCredentials {
         JsonNode services = root.path(serviceType);
 
         for (JsonNode service : services) {
+            logger.info("Service found: " + service.asText() + "with name: " + service.get("name").asText());
             if (Objects.equals(service.get("name").asText(), serviceName)) {
                 return service.get("credentials").get(credentialKey).asText();
             }
